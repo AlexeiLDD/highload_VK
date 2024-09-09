@@ -12,10 +12,16 @@
 - Оценка постов (лайк/дизлайк)
 
 ### Целевая аудитория
-[**ВКонтакте**](https://ria.ru/20230618/vkontakte-1878955016.html) имеет более 105 миллионов активных пользователей в месяц.
+**ВКонтакте** имеет более 105 миллионов активных пользователей в месяц[1].
 
 | **Страна**              | **Количество пользователей в месяц, млн** |
 | ----------------------- | ----------------------------------------- |
-| Россия                  | 90 ([Данные за 2024г.](https://vk.company/ru/press/releases/11757/))|
-| Беларусь                | 2,8 ([Данные за 2023г.](https://vk.company/ru/press/releases/11664/))|
-| Казахстан               | 1,8 ([Данные за 2019г.](https://tengrinews.kz/internet/nazvana-samaya-populyarnaya-sotsialnaya-set-v-kazahstane-377526/))|
+| Россия                  | 90 (Данные за 2024г.[2])                  |
+| Беларусь                | 2,8 (Данные за 2023г.[3])                 |
+| Казахстан               | 1,8 (Данные за 2019г.[4])                 |
+
+## Список источников
+1. https://ria.ru/20230618/vkontakte-1878955016.html
+2. https://vk.company/ru/press/releases/11757/
+3. https://vk.company/ru/press/releases/11664/
+4. https://tengrinews.kz/internet/nazvana-samaya-populyarnaya-sotsialnaya-set-v-kazahstane-377526/
