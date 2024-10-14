@@ -229,19 +229,19 @@ CREATE INDEX idx_posts_created_at ON posts(created_at);
 
 #### Индексы для таблицы comments
 
-'''
+```
 CREATE INDEX idx_comments_post_id ON comments(post_id);
 CREATE INDEX idx_comments_author_id ON comments(author_id);
 CREATE INDEX idx_comments_created_at ON comments(created_at);
-'''
+```
 
 #### Индексы для таблицы events
 
-'''
+```
 CREATE INDEX idx_events_user_id ON events(user_id);
 CREATE INDEX idx_events_type ON events(type);
 CREATE INDEX idx_events_created_at ON events(created_at);
-'''
+```
 
 #### Индексы для таблиц ..._statistics
 
