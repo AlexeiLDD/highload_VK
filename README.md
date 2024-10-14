@@ -188,4 +188,66 @@
 
 ## 5. Логическая схема БД
 
-![db.logic](./db.logic.svg)
+![db.logic](./highload.svg)
+
+## 6. Физическая схема БД
+
+![db.physic](./highload.png)
+
+### Индексы
+
+#### Индексы для таблицы subscribers
+
+```
+CREATE INDEX idx_subscribers_community_id ON subscribers(community_id);
+CREATE INDEX idx_subscribers_subscriber_id ON subscribers(subscriber_id);
+```
+
+#### Индексы для таблицы friends
+
+```
+CREATE INDEX idx_friends_user1_id ON friends(user1_id);
+CREATE INDEX idx_friends_user2_id ON friends(user2_id);
+CREATE INDEX idx_friends_status ON friends(status);
+```
+
+#### Индексы для таблицы chat_messages
+
+```
+CREATE INDEX idx_chat_messages_chat_id ON chat_messages(chat_id);
+CREATE INDEX idx_chat_messages_sender_id ON chat_messages(sender_id);
+CREATE INDEX idx_chat_messages_created_at ON chat_messages(created_at);
+```
+
+#### Индексы для таблицы posts
+
+```
+CREATE INDEX idx_posts_community_id ON posts(community_id);
+CREATE INDEX idx_posts_author_id ON posts(author_id);
+CREATE INDEX idx_posts_created_at ON posts(created_at);
+```
+
+#### Индексы для таблицы comments
+
+'''
+CREATE INDEX idx_comments_post_id ON comments(post_id);
+CREATE INDEX idx_comments_author_id ON comments(author_id);
+CREATE INDEX idx_comments_created_at ON comments(created_at);
+'''
+
+#### Индексы для таблицы events
+
+'''
+CREATE INDEX idx_events_user_id ON events(user_id);
+CREATE INDEX idx_events_type ON events(type);
+CREATE INDEX idx_events_created_at ON events(created_at);
+'''
+
+#### Индексы для таблиц ..._statistics
+
+```
+CREATE INDEX idx_..._statistics_..._id ON ..._statistics(..._id);
+CREATE INDEX idx_..._statistics_user_id ON ..._statistics(user_id);
+CREATE INDEX idx_..._statistics_event_type ON ..._statistics(event_type);
+
+```
