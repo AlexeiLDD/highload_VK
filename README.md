@@ -370,60 +370,177 @@
 
 ![db.physic](./highload.png)
 
-### Индексы
-
-#### Индексы для таблицы subscribers
-
-```
-CREATE INDEX idx_subscribers_community_id ON subscribers(community_id);
-CREATE INDEX idx_subscribers_subscriber_id ON subscribers(subscriber_id);
-```
-
-#### Индексы для таблицы friends
-
-```
-CREATE INDEX idx_friends_user1_id ON friends(user1_id);
-CREATE INDEX idx_friends_user2_id ON friends(user2_id);
-CREATE INDEX idx_friends_status ON friends(status);
-```
-
-#### Индексы для таблицы chat_messages
-
-```
-CREATE INDEX idx_chat_messages_chat_id ON chat_messages(chat_id);
-CREATE INDEX idx_chat_messages_sender_id ON chat_messages(sender_id);
-CREATE INDEX idx_chat_messages_created_at ON chat_messages(created_at);
-```
-
-#### Индексы для таблицы posts
-
-```
-CREATE INDEX idx_posts_community_id ON posts(community_id);
-CREATE INDEX idx_posts_author_id ON posts(author_id);
-CREATE INDEX idx_posts_created_at ON posts(created_at);
-```
-
-#### Индексы для таблицы comments
-
-```
-CREATE INDEX idx_comments_post_id ON comments(post_id);
-CREATE INDEX idx_comments_author_id ON comments(author_id);
-CREATE INDEX idx_comments_created_at ON comments(created_at);
-```
-
-#### Индексы для таблицы events
-
-```
-CREATE INDEX idx_events_user_id ON events(user_id);
-CREATE INDEX idx_events_type ON events(type);
-CREATE INDEX idx_events_created_at ON events(created_at);
-```
-
-#### Индексы для таблиц ..._statistics
-
-```
-CREATE INDEX idx_..._statistics_..._id ON ..._statistics(..._id);
-CREATE INDEX idx_..._statistics_user_id ON ..._statistics(user_id);
-CREATE INDEX idx_..._statistics_event_type ON ..._statistics(event_type);
-
-```
+<table>
+	<thead>
+		<tr>
+			<th>Таблица</th>
+			<th>СУБД</th>
+			<th>Индексы</th>
+            <th>Денормализация</th>
+			<th>Шардирование</th>
+			<th>Требования к согласованности</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>users</td>
+			<td>Apache Cassandra</td>
+			<td>username, registration_date</td>
+            <td>-</td>
+			<td>Горизонтальное хешированное по id</td>
+			<td>Строгая согласованность для уникальных полей</td>
+		</tr>
+		<tr>
+			<td>sessions</td>
+			<td>Redis</td>
+			<td>-</td>
+            <td>-</td>
+			<td>-</td>
+			<td>Удаление записей при таймауте</td>
+		</tr>
+		<tr>
+			<td>communities</td>
+			<td>Apache Cassandra</td>
+			<td>creator_id, created_at</td>
+            <td>-</td>
+			<td>Горизонтальное хешированное по id</td>
+			<td>Строгая согласованность для уникальных полей</td>
+		</tr>
+		<tr>
+			<td>subscribers</td>
+			<td>Apache Cassandra</td>
+			<td>community_id</td>
+            <td>Поля full_name, avatar дублируются из таблицы users</td>
+			<td>Горизонтальное хешированное по community_id</td>
+			<td>Строгая согласованность для уникальных полей, запись создается одновременно с записью в таблице subscribtions</td>
+		</tr>
+		<tr>
+			<td>subscribtions</td>
+			<td>Apache Cassandra</td>
+			<td>user_id</td>
+            <td>Поля community_name, community_avatar дублируются из таблицы communities</td>
+			<td>Горизонтальное хешированное по user_id</td>
+			<td>Строгая согласованность для уникальных полей, запись создается одновременно с записью в таблице subscribers</td>
+		</tr>
+		<tr>
+			<td>friends</td>
+			<td>Apache Cassandra</td>
+            <td>user_id, created_at</td>
+            <td>Поля full_name, avatar дублируются из таблицы users</td>
+			<td>Горизонтальное хешированное по user_id</td>
+			<td>Строгая согласованность для уникальных полей</td>
+		</tr>
+		<tr>
+			<td>chats</td>
+			<td>Apache Cassandra</td>
+			<td>creator_id, created_at</td>
+            <td>Массив user_ids для получения списка id участников чата</td>
+			<td>Горизонтальное хешированное по id</td>
+			<td>Строгая согласованность для уникальных полей</td>
+		</tr>
+		<tr>
+			<td>chat_messages</td>
+			<td>Apache Cassandra</td>
+			<td>chat_id, sender_id</td>
+            <td>-</td>
+			<td>Горизонтальное диапазонное по created_at</td>
+			<td>Строгая согласованность для уникальных полей</td>
+		</tr>
+		<tr>
+			<td>posts</td>
+			<td>Apache Cassandra</td>
+			<td>original_post_id, title, author_id, community_id, created_at</td>
+            <td>-</td>
+			<td>Горизонтальное хешированное по id</td>
+			<td>Строгая согласованность для уникальных полей</td>
+		</tr>
+		<tr>
+			<td>comments</td>
+			<td>Apache Cassandra</td>
+			<td>post_id, created_at</td>
+            <td>-</td>
+			<td>Горизонтальное хешированное по post_id</td>
+			<td>Строгая согласованность для уникальных полей</td>
+		</tr>
+		<tr>
+			<td>events</td>
+			<td>Apache Kafka</td>
+            <td>-</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>post_counters</td>
+			<td>ClickHouse</td>
+			<td>post_id</td>
+            <td>-</td>
+			<td>Горизонтальное хешированное по post_id</td>
+			<td>Согласуется с post_actions</td>
+		</tr>
+		<tr>
+			<td>comment_counters</td>
+			<td>ClickHouse</td>
+			<td>comment_id</td>
+            <td>-</td>
+			<td>Горизонтальное хешированное по comment_id</td>
+			<td>Согласуется с comment_actions</td>
+		</tr>
+		<tr>
+			<td>community_counters</td>
+			<td>ClickHouse</td>
+			<td>community_id</td>
+            <td>-</td>
+			<td>Горизонтальное хешированное по community_id</td>
+			<td>Согласуется с community_actions</td>
+		</tr>
+		<tr>
+			<td>community_actions</td>
+			<td>Elasticsearch</td>
+			<td>community_id</td>
+            <td>-</td>
+			<td>По индексу</td>
+			<td>Согласуется с events, согласованно с добавлением/удалением/изменением записей в соответствующих таблицах (communities, subscribers, subscribtions...) </td>
+		</tr>
+		<tr>
+			<td>post_actions</td>
+			<td>Elasticsearch</td>
+			<td>post_id</td>
+            <td>-</td>
+			<td>По индексу</td>
+			<td>Согласуется с events, согласованно с добавлением/удалением/изменением записей в соответствующих таблицах</td>
+		</tr>
+		<tr>
+			<td>comment_actions</td>
+			<td>Elasticsearch</td>
+			<td>comment_id</td>
+            <td>-</td>
+			<td>По индексу</td>
+			<td>Согласуется с events, согласованно с добавлением/удалением/изменением записей в соответствующих таблицах</td>
+		</tr>
+		<tr>
+			<td>user_actions</td>
+			<td>Elasticsearch</td>
+			<td>user_id</td>
+            <td>-</td>
+			<td>По индексу</td>
+			<td>Согласуется с events, согласованно с добавлением/удалением/изменением записей в соответствующих таблицах</td>
+		</tr>
+		<tr>
+			<td>message_actions</td>
+			<td>Elasticsearch</td>
+			<td>message_id</td>
+            <td>-</td>
+			<td>По индексу</td>
+			<td>Согласуется с events, согласованно с добавлением/удалением/изменением записей в соответствующих таблицах</td>
+		</tr>
+		<tr>
+			<td>media_content</td>
+			<td>s3</td>
+			<td>-</td>
+            <td>-</td>
+			<td>-</td>
+			<td>Удаление, при удаление записи со ссылкой на контент</td>
+		</tr>
+	</tbody>
+</table>
