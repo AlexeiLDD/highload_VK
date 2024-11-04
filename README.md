@@ -188,7 +188,7 @@
 
 ## 5. Логическая схема БД
 
-![db.logic](./highload.svg)
+![db.logic](./highload_logic.png)
 
 <table>
 	<thead>
