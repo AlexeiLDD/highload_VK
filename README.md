@@ -823,3 +823,6 @@
 		</tr>
 	</tbody>
 </table>
+
+## 10. Схема проекта
+![Project_scheme](./Project_scheme.drawio.png)
