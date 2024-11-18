@@ -26,7 +26,7 @@
 - Репосты (переслать пост/комментарий, сохранить в избранное)
 
 ### Ключевые продуктовые решения
-- Настройки конфиденциальности
+- Двухэтапное персональное ранжирование
 - Работа с медиа контентом
 
 ### Список источников
@@ -1023,3 +1023,185 @@ Kibana:
 
 ## 10. Схема проекта
 ![Project_scheme](./Project_scheme.drawio.png)
+
+## 11. Список серверов
+
+### Список необходимых ресурсов
+
+<table>
+	<thead>
+		<tr>
+			<th>Сервис</th>
+			<th>Целевая пиковая нагрузка приложения</th>
+			<th>CPU</th>
+			<th>RAM</th>
+			<th>Net</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>auth</td>
+			<td>200000 RPS</td>
+			<td>24</td>
+			<td>50 Gb</td>
+			<td>1.6 Gbit/s</td>
+		</tr>
+		<tr>
+			<td>user</td>
+			<td>10000 RPS</td>
+			<td>8</td>
+			<td>32 Gb</td>
+			<td>0.1 Gbit/s</td>
+		</tr>
+		<tr>
+			<td>messenger</td>
+			<td>65000 connections</td>
+			<td>70</td>
+			<td>768 Gb</td>
+			<td>0.6 Gbit/s</td>
+		</tr>
+		<tr>
+			<td>content</td>
+			<td>11000 RPS</td>
+			<td>32</td>
+			<td>128 Gb</td>
+			<td>0.3 Gbit/s</td>
+		</tr>
+		<tr>
+			<td>feed</td>
+			<td>7000 RPS</td>
+			<td>140</td>
+			<td>576 Gb</td>
+			<td>2.8 Gbit/s</td>
+		</tr>
+		<tr>
+			<td>search</td>
+			<td>5000 RPS</td>
+			<td>80</td>
+			<td>100 Gb</td>
+			<td>0.24 Gbit/s</td>
+		</tr>
+		<tr>
+			<td>file</td>
+			<td>100000 RPS</td>
+			<td>48</td>
+			<td>512 Gb</td>
+			<td>10 Gbit/s</td>
+		</tr>
+		<tr>
+			<td>stats</td>
+			<td>50000 RPS</td>
+			<td>16</td>
+			<td>16 Gb</td>
+			<td>0.5 Gbit/s</td>
+		</tr>
+	</tbody>
+</table>
+
+### Серверы
+
+<table>
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Хостинг</th>
+      <th>Конфигурация</th>
+      <th>Cores</th>
+      <th>Cnt</th>
+      <th>Покупка</th>
+      <th>Аренда</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>kubenode</td>
+      <td>own</td>
+      <td>2x6338/16x32GB/2xNVMe4T/2x25Gb/s</td>
+      <td>64</td>
+      <td>30</td>
+      <td>$50000</td>
+      <td>$1200/мес</td>
+    </tr>
+  </tbody>
+</table>
+
+### Сервисы в оркестрации
+
+<table>
+	<thead>
+		<tr>
+			<th>Сервис</th>
+			<th>CPU/r</th>
+			<th>CPU/l</th>
+			<th>RAM/r</th>
+			<th>RAM/l</th>
+			<th>Cnt</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>auth</td>
+			<td>4</td>
+			<td>8</td>
+			<td>8 Gb</td>
+			<td>16 Gb</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>user</td>
+			<td>4</td>
+			<td>4</td>
+			<td>16 Gb</td>
+			<td>16 Gb</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>messenger</td>
+			<td>8</td>
+			<td>16</td>
+			<td>96 Gb</td>
+			<td>128 Gb</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>content</td>
+			<td>8</td>
+			<td>8</td>
+			<td>32 Gb</td>
+			<td>64 Gb</td>
+			<td>5</td>
+		</tr>
+		<tr>
+			<td>feed</td>
+			<td>8</td>
+			<td>16</td>
+			<td>32 Gb</td>
+			<td>128 Gb</td>
+			<td>18</td>
+		</tr>
+		<tr>
+			<td>search</td>
+			<td>8</td>
+			<td>8</td>
+			<td>8 Gb</td>
+			<td>16 Gb</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>file</td>
+			<td>8</td>
+			<td>8</td>
+			<td>64 Gb</td>
+			<td>128 Gb</td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<td>stats</td>
+			<td>4</td>
+			<td>8</td>
+			<td>4 Gb</td>
+			<td>8 Gb</td>
+			<td>4</td>
+		</tr>
+	</tbody>
+</table>
